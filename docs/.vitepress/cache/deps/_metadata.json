@@ -1,29 +1,56 @@
 {
-  "hash": "8581dcf1",
-  "configHash": "5a2e0709",
-  "lockfileHash": "76e40781",
-  "browserHash": "b2d16289",
+  "hash": "4b08ba3c",
+  "configHash": "a50d3c81",
+  "lockfileHash": "1ac38c26",
+  "browserHash": "c42fae96",
   "optimized": {
     "vue": {
       "src": "../../../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "ef1aee33",
+      "fileHash": "733a6358",
       "needsInterop": false
     },
     "vitepress > @vue/devtools-api": {
       "src": "../../../../node_modules/@vue/devtools-api/dist/index.js",
       "file": "vitepress___@vue_devtools-api.js",
-      "fileHash": "d8d7bd25",
+      "fileHash": "e0b0e692",
       "needsInterop": false
     },
     "vitepress > @vueuse/core": {
       "src": "../../../../node_modules/@vueuse/core/dist/index.js",
       "file": "vitepress___@vueuse_core.js",
-      "fileHash": "8dc71e39",
+      "fileHash": "2d3495fa",
+      "needsInterop": false
+    },
+    "vitepress > @vueuse/integrations/useFocusTrap": {
+      "src": "../../../../node_modules/@vueuse/integrations/dist/useFocusTrap.js",
+      "file": "vitepress___@vueuse_integrations_useFocusTrap.js",
+      "fileHash": "727b1bb9",
+      "needsInterop": false
+    },
+    "vitepress > mark.js/src/vanilla.js": {
+      "src": "../../../../node_modules/mark.js/src/vanilla.js",
+      "file": "vitepress___mark__js_src_vanilla__js.js",
+      "fileHash": "13ff670e",
+      "needsInterop": false
+    },
+    "vitepress > minisearch": {
+      "src": "../../../../node_modules/minisearch/dist/es/index.js",
+      "file": "vitepress___minisearch.js",
+      "fileHash": "fb28a4d3",
+      "needsInterop": false
+    },
+    "fireworks-js": {
+      "src": "../../../../node_modules/fireworks-js/dist/index.es.js",
+      "file": "fireworks-js.js",
+      "fileHash": "19ac221e",
       "needsInterop": false
     }
   },
   "chunks": {
+    "chunk-BQOVATTU": {
+      "file": "chunk-BQOVATTU.js"
+    },
     "chunk-IKY3COGX": {
       "file": "chunk-IKY3COGX.js"
     }
