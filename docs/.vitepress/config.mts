@@ -1,11 +1,51 @@
 import { defineConfig } from 'vitepress'
+import { generateSidebar, folderNameMap } from './sidebar.mts'
+
+
 
 export default defineConfig({
+
   base:'/wangblog/',
   title: '我的博客',
   description: '记录学习与生活',
 
+
+    // ✨ 新增加的部分：用于控制 Markdown 的全局行为 ✨
+    markdown: {
+      config(md) {
+        // 保存原始的 parse 方法
+        const originalParse = md.parse
+
+        // 重写 parse 方法，在解析 Markdown 时统计字数并存入 frontmatter
+        md.parse = function(src, env) {
+          // 统计中文字符（可根据需要调整）
+          const chineseChars = (src.match(/[\u4e00-\u9fa5]/g) || []).length
+          // 其他字符（英文、数字、标点）按 0.5 估算
+          const otherChars = src.replace(/[\u4e00-\u9fa5]/g, '').length
+          const wordCount = chineseChars + Math.round(otherChars * 0.5)
+
+          // 将字数存入 env.frontmatter
+          if (!env.frontmatter) env.frontmatter = {}
+          env.frontmatter.wordCount = wordCount
+
+          // 调用原始的 parse 方法继续解析
+          return originalParse.call(this, src, env)
+        }
+      },
+      anchor: {
+        // 把这个参数设为 false，悬停时的 "#" 符号就不会再出现了
+        permalink: false
+      }
+    },
+
   themeConfig: {
+      lastUpdated: {
+      text: '最后更新', // 显示的文字
+      formatOptions: { // 可选：日期格式
+        dateStyle: 'full',
+        timeStyle: 'medium'
+      }
+    },
     nav: [
       { text: '首页', link: '/' },
       { text: '运维', link: '/ops/' },
@@ -16,53 +56,30 @@ export default defineConfig({
       { text: '友链', link: '/links' },
       { text: 'GitHub', link: 'https://github.com/itwangc' },
     ],
-
+    // 自动生成的侧边栏
     sidebar: [
       {
-        text: '随写编年',
-        items: [
-          { text: '年终总结', link: '/posts/year-end-summary' },
-          { text: '2012年', link: '/posts/2012' },
-          { text: '2013年', link: '/posts/2013' },
-          { text: '2014年', link: '/posts/2014' },
-          { text: '2015年', link: '/posts/2015' },
-          { text: '2016年', link: '/posts/2016' },
-          { text: '2017年', link: '/posts/2017' },
-          { text: '2018年', link: '/posts/2018' },
-          { text: '2019年', link: '/posts/2019' },
-          { text: '2020年', link: '/posts/2020' },
-          { text: '2021年', link: '/posts/2021' },
-          { text: '2022年', link: '/posts/2022' },
-          { text: '2023年', link: '/posts/2023' },
-          { text: '2024年', link: '/posts/2024' },
-          { text: '2025年', link: '/posts/2025' },
-        ]
+        text: folderNameMap['years'] || '年份',  // 使用映射显示中文
+        collapsible: true,
+        collapsed: true,
+        items: generateSidebar('years')  // 自动扫描 docs/years 下的内容
       },
       {
-        text: '家人物语',
-        items: [
-          { text: '追忆青春', link: '/family/youth' },
-          { text: '父亲的朋友圈', link: '/family/father' },
-          { text: '电影音乐', link: '/family/movies' },
-          { text: '效率工具', link: '/family/tools' },
-        ]
+        text: folderNameMap['family'] || '家人物语',
+        collapsible: true,
+        collapsed: true,
+        items: generateSidebar('family') // 自动扫描 docs/family 下的内容
       }
+      // 如果你希望根目录（/）下也显示其他内容，可以继续添加
     ],
-    search: {
-      provider: 'local'
-    },
-     // 右侧大纲显示层级（可选）
-     outline: {
-      level: [2, 3]  // 显示 h2 和 h3 标题
-    },
 
-    // 上一页/下一页链接（可选）
-    docFooter: {
-      prev: '上一篇',
-      next: '下一篇'
+    search: { provider: 'local' },
+    outline: {
+      label: '目录', // 自定义标题文字
+      level: [2, 3], // 只显示 h2 和 h3 标题（可选）
     },
-    socialLinks: [
-      { icon: 'github', link: 'https://gitee.com/你的用户名' }
-    ]
-  }
+    docFooter: { prev: '上一篇', next: '下一篇' },
+    socialLinks: [ { icon: 'github', link: 'https://github.com/你的用户名' } ]
+  },
+
 })

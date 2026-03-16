@@ -8,6 +8,8 @@
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
-    "fireworks-js": "^2.10.8"
+    "@nolebase/vitepress-plugin-meta": "^2.18.2",
+    "fireworks-js": "^2.10.8",
+    "gray-matter": "^4.0.3"
   }
 }
