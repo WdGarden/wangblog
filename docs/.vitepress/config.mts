@@ -5,7 +5,7 @@ import { generateSidebar, folderNameMap } from './sidebar.mts'
 
 export default defineConfig({
 
-  base:'/wangblog/',
+  base:'/',
   title: '我的博客',
   description: '记录学习与生活',
 

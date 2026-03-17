@@ -51,18 +51,6 @@
     .VPNavBar.has-sidebar .title {
       width: 167px;
     }
-    /* 将最后更新移到右侧 */
-.VPDocFooter {
-  display: flex;
-  justify-content: space-between;  /* 左右分开 */
-  align-items: center;
-}
-
-.VPDocFooter .last-updated {
-  order: 2;  /* 让它排在右侧 */
-  margin-left: auto; /* 确保靠右 */
-}
-
 
 
   /* 移除分组之间的默认上边框 */
@@ -236,3 +224,15 @@
   .VPDoc .aside {
     max-width: 256px !important;
   }
+
+
+  /* 当侧边栏隐藏时（.sidebar-hidden 类作用在父容器） */
+.sidebar-hidden .content-container {
+  max-width: 1200px !important;  /* 原来可能是1000px，调大以利用更多空间 */
+  /* 也可以使用百分比，例如 width: 90%; 但 max-width 更灵活 */
+}
+
+.sidebar-hidden .VPDoc .aside {
+  max-width: 200px !important;   /* 原来256px，减小目录宽度 */
+  width: 200px !important;        /* 固定宽度，确保占位精确 */
+}
