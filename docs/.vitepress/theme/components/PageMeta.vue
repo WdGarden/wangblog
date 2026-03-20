@@ -51,10 +51,14 @@
             <line x1="16" y1="17" x2="8" y2="17"></line>
             <polyline points="10 9 9 9 8 9"></polyline>
           </svg>
-          {{ formatWordCount(wordCount) }}
+         {{ wordCount }}
         </span>
 
         <span class="original-tag" v-if="frontmatter.original">原创</span>
+       <div class="meta-info">
+  <!-- 原有的元数据 -->
+  <button @click="downloadPDF" class="pdf-btn" title="下载 PDF">📥 下载 PDF</button>
+</div>
       </div>
     </div>
   </div>
@@ -67,45 +71,36 @@ import { folderNameMap } from '../../sidebar.mts'  // 根据实际路径调整
 
 const { page, frontmatter } = useData()
 
+
+const exportPDF = () => {
+  window.print()
+}
+
 // 只有文章页才显示
 const hasMeta = computed(() => page.value?.relativePath && page.value.relativePath !== 'index.md')
 
 // --- 修复字数统计逻辑 ---
 const wordCount = computed(() => {
-  // 优先尝试从 page.html 提取（如果有插件支持）
-  let text = ''
-
-  if (page.value.html) {
-    // 去除 HTML 标签
-    text = page.value.html.replace(/<[^>]*>/g, '')
-  } else if (page.value.content) {
-    // 降级方案：直接从 markdown 源码提取
-    // 去除 frontmatter (--- ... ---), 代码块, 和 HTML 标签
-    text = page.value.content
-      .replace(/^---[\s\S]*?---\n/, '')
-      .replace(/```[\s\S]*?```/g, '')
-      .replace(/<[^>]*>/g, '')
+  const count = frontmatter.value?.wordCount
+  if (count === undefined) return '' // 不显示
+  if (count >= 1000) {
+    return (count / 1000).toFixed(1) + 'k'
   }
-
-  // 去除多余空白
-  text = text.replace(/\s+/g, ' ').trim()
-  const count = text.length
-
-  // 返回格式化后的字符串，或者直接返回数字供模板格式化
-  return count
+  return count + ' 字'
 })
 
 // 注入侧边栏状态和方法
 const { open: sidebarOpen, toggle: toggleSidebar } = inject('sidebar')
 
 // 格式化函数：接收数字，返回 "1.2k" 或 "500 字"
-const formatWordCount = (count) => {
-  if (!count && count !== 0) return '0 字'
+const formattedWordCount = computed(() => {
+  const count = frontmatter.value?.wordCount
+  if (count === undefined) return ''
   if (count >= 1000) {
     return (count / 1000).toFixed(1) + 'k'
   }
   return count + ' 字'
-}
+})
 
 // 格式化日期
 const formatDate = (dateStr) => {
@@ -137,6 +132,40 @@ const breadcrumb = computed(() => {
 
   return crumbs
 })
+
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
+const downloadPDF = async () => {
+  const element = document.querySelector('.vp-doc')
+  if (!element) return
+
+  try {
+    // 降低 scale 到 1.5 或 1.2（原先是 2），平衡清晰度与体积
+    const canvas = await html2canvas(element, {
+      scale: 1.2,           // 适当降低，肉眼几乎看不出差别
+      logging: false,
+      allowTaint: false,
+      useCORS: true
+    })
+
+    const imgData = canvas.toDataURL('image/jpeg', 0.7) // 使用 JPEG 格式，质量 0.7
+
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'px',
+      format: 'a4'
+    })
+
+    const pdfWidth = pdf.internal.pageSize.getWidth()
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width
+
+    // 如果文章超长，需要分页（这里简化，仅演示单页）
+    pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST') // 添加 FAST 压缩选项
+    pdf.save('article.pdf')
+  } catch (error) {
+    console.error('PDF 生成失败:', error)
+  }
+}
 </script>
 
 
@@ -199,6 +228,25 @@ const breadcrumb = computed(() => {
   align-items: center;
   gap: 0.3rem;
   white-space: nowrap;
+}
+
+.pdf-btn {
+  background: none;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 0.2rem 0.8rem;
+  font-size:1.05rem;
+  cursor: pointer;
+  color: #6b7280;
+  transition: all 0.2s;
+  white-space: nowrap; /* 防止文字换行 */
+  margin-left: 0.5rem;  /* 与左侧元数据拉开一点距离 */
+}
+
+.pdf-btn:hover {
+  background-color: #f3f4f6;
+  color: #2563eb;
+  border-color: #2563eb;
 }
 
 .original-tag {

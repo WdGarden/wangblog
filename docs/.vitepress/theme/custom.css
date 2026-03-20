@@ -236,3 +236,95 @@
   max-width: 200px !important;   /* 原来256px，减小目录宽度 */
   width: 200px !important;        /* 固定宽度，确保占位精确 */
 }
+
+/* 让右侧大纲的每个列表项居中 */
+.VPDocAside .outline-item {
+  text-align: center;        /* 文字居中 */
+  list-style-position: inside; /* 如果有点符号，让符号也随文字居中（可选） */
+}
+
+/* 如果列表项内的链接需要占满整行，可以设置 */
+.VPDocAside .outline-link {
+  display: block;            /* 让链接块级化，方便整体居中 */
+  text-align: center;        /* 链接文本居中 */
+  padding: 0.2rem 0;         /* 适当增加内边距，美观 */
+}
+
+@media print {
+  /* 隐藏导航、侧边栏、页脚等 */
+  .VPNav,
+  .VPSidebar,
+  .VPDocFooter,
+  .aside {
+    display: none !important;
+  }
+
+  /* 调整内容区域宽度 */
+  .VPContent {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* 确保正文区域占据整页 */
+  .vp-doc {
+    max-width: 100% !important;
+  }
+}
+/* 搜索框容器 */
+.DocSearch-Container {
+  --docsearch-primary-color: #646cff;
+}
+
+/* 搜索结果高亮 */
+.DocSearch-Hit mark {
+  color: #646cff;
+  font-weight: bold;
+  background: transparent;
+}
+
+/* 搜索结果框最大高度，支持滚动 */
+.DocSearch-Hits {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+/* 让搜索框始终显示（覆盖默认的隐藏逻辑） */
+.DocSearch-Button {
+  display: flex !important;       /* 强制显示为 flex，原可能被隐藏 */
+  width: 200px;                   /* 设置固定宽度 */
+  height: 36px;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 18px;
+  padding: 0 12px;
+  cursor: text;
+}
+
+/* 隐藏原来的按钮文字（如“搜索”），只保留放大镜图标 */
+.DocSearch-Button .DocSearch-Button-Placeholder {
+  display: none;
+}
+
+/* 调整按键提示（如 Ctrl+K）的样式 */
+.DocSearch-Button .DocSearch-Button-Keys {
+  margin-left: auto;
+}
+
+/* 搜索结果下拉容器：定位在搜索框下方 */
+.DocSearch-Container {
+  position: fixed !important;
+  top: calc(var(--vp-nav-height) + 10px) !important;
+  left: auto !important;
+  right: 20px !important;
+  width: 400px !important;
+  max-height: 400px !important;
+  background: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 100;
+}
+
+/* 让输入框实际可点击区域是整个按钮 */
+.DocSearch-Button input {
+  /* 插件没有直接提供输入框，但可以通过 JS 控制，这里简化处理 */
+}

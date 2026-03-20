@@ -1,52 +1,67 @@
 {
-  "hash": "f30b43b0",
-  "configHash": "a50d3c81",
-  "lockfileHash": "9c093da1",
-  "browserHash": "1a3221a3",
+  "hash": "16de4ce5",
+  "configHash": "9535c07b",
+  "lockfileHash": "1e6ece1b",
+  "browserHash": "22846162",
   "optimized": {
     "vue": {
       "src": "../../../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "9c1faaa3",
+      "fileHash": "8203e387",
       "needsInterop": false
     },
     "vitepress > @vue/devtools-api": {
       "src": "../../../../node_modules/@vue/devtools-api/dist/index.js",
       "file": "vitepress___@vue_devtools-api.js",
-      "fileHash": "40b475f5",
+      "fileHash": "e7b732c2",
       "needsInterop": false
     },
     "vitepress > @vueuse/core": {
       "src": "../../../../node_modules/@vueuse/core/dist/index.js",
       "file": "vitepress___@vueuse_core.js",
-      "fileHash": "1602f752",
+      "fileHash": "e8bb2036",
       "needsInterop": false
     },
-    "vitepress > @vueuse/integrations/useFocusTrap": {
-      "src": "../../../../node_modules/@vueuse/integrations/dist/useFocusTrap.js",
-      "file": "vitepress___@vueuse_integrations_useFocusTrap.js",
-      "fileHash": "a83f126c",
+    "html2canvas": {
+      "src": "../../../../node_modules/html2canvas/dist/html2canvas.esm.js",
+      "file": "html2canvas.js",
+      "fileHash": "3aa78e78",
       "needsInterop": false
     },
-    "vitepress > mark.js/src/vanilla.js": {
-      "src": "../../../../node_modules/mark.js/src/vanilla.js",
-      "file": "vitepress___mark__js_src_vanilla__js.js",
-      "fileHash": "6b79d6b6",
+    "jspdf": {
+      "src": "../../../../node_modules/jspdf/dist/jspdf.es.min.js",
+      "file": "jspdf.js",
+      "fileHash": "89bc045e",
       "needsInterop": false
     },
-    "vitepress > minisearch": {
-      "src": "../../../../node_modules/minisearch/dist/es/index.js",
-      "file": "vitepress___minisearch.js",
-      "fileHash": "7fec7aaa",
+    "flexsearch": {
+      "src": "../../../../node_modules/flexsearch/dist/flexsearch.bundle.module.min.mjs",
+      "file": "flexsearch.js",
+      "fileHash": "d03541b3",
       "needsInterop": false
     }
   },
   "chunks": {
-    "chunk-BQOVATTU": {
-      "file": "chunk-BQOVATTU.js"
+    "index.es-7RIPWBNV": {
+      "file": "index__es-7RIPWBNV.js"
     },
     "chunk-IKY3COGX": {
       "file": "chunk-IKY3COGX.js"
+    },
+    "chunk-2ALL2YQY": {
+      "file": "chunk-2ALL2YQY.js"
+    },
+    "worker_threads-GIUSICMM": {
+      "file": "worker_threads-GIUSICMM.js"
+    },
+    "chunk-NIOWPNHV": {
+      "file": "chunk-NIOWPNHV.js"
+    },
+    "purify.es-5EKTLXSE": {
+      "file": "purify__es-5EKTLXSE.js"
+    },
+    "chunk-5WRI5ZAA": {
+      "file": "chunk-5WRI5ZAA.js"
     }
   }
 }

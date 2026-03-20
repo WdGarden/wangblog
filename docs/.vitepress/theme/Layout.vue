@@ -3,6 +3,7 @@ import { ref, provide } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import PageMeta from './components/PageMeta.vue'
 
+
 const { Layout } = DefaultTheme
 
 // 侧边栏显示状态
@@ -20,10 +21,12 @@ provide('sidebar', {
 
 <template>
   <div class="custom-layout" :class="{ 'sidebar-hidden': !sidebarOpen }">
+    
     <Layout>
       <template #doc-before>
         <PageMeta />
       </template>
+   
     </Layout>
   </div>
 </template>
@@ -37,11 +40,12 @@ provide('sidebar', {
 .sidebar-hidden .VPContent {
   margin-left: 0 !important;
   width: 100% !important;
+  
 }
 
 /* 可选：添加平滑过渡效果 */
 .VPSidebar,
 .VPContent {
-  transition: all 0.3s ease;
+  transition: all 0.8s ease;
 }
 </style>

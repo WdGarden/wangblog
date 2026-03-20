@@ -1,6 +1,12 @@
 {
   "devDependencies": {
-    "vitepress": "^2.0.0-alpha.16"
+    "@nolebase/vitepress-plugin-meta": "^2.18.2",
+    "fast-glob": "^3.3.3",
+    "flexsearch": "^0.8.212",
+    "vitepress": "^2.0.0-alpha.16",
+    "vitepress-plugin-pagefind": "^0.4.18",
+    "vitepress-plugin-search": "^1.0.4-alpha.22",
+    "vuepress-plugin-fulltext-search": "^2.2.1"
   },
   "scripts": {
     "docs:dev": "vitepress dev docs",
@@ -8,8 +14,9 @@
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
-    "@nolebase/vitepress-plugin-meta": "^2.18.2",
     "fireworks-js": "^2.10.8",
-    "gray-matter": "^4.0.3"
+    "gray-matter": "^4.0.3",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1"
   }
 }
