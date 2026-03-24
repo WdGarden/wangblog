@@ -2,329 +2,244 @@
    全局基础
    =============================== */
 
-   body {
-    font-size: 16px; /* 全局字体大小（默认 14px） */
-  }
+body {
+  font-size: 16px; /* 全局字体大小 */
+}
+/* 字体定义：霞鹜文楷 */
+@font-face {
+  font-family: 'LXGWWenKai';
+  src: url('/fonts/LXGWWenKai-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
-  /* 字体定义：霞鹜文楷 */
-  @font-face {
-    font-family: 'LXGWWenKai';
-    src: url('/wangblog/fonts/LXGWWenKai-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap; /* 优化字体加载体验 */
-  }
+@font-face {
+  font-family: 'LXGWWenKai';
+  src: url('/fonts/LXGWWenKai-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
 
-  @font-face {
-    font-family: 'LXGWWenKai';
-    src: url('/wangblog/fonts/LXGWWenKai-Light.ttf') format('truetype');
-    font-weight: 300; /* 细体 */
-    font-style: normal;
-    font-display: swap;
-  }
-
-  /* 全局字体变量（应用于正文和标题） */
-  :root {
-    --vp-font-family-base: 'LXGWWenKai', 'Inter', '系统备选字体', sans-serif;
-    --vp-font-family-head: 'LXGWWenKai', 'Inter', '系统备选字体', sans-serif;
-    --vp-sidebar-width: 200px; /* 侧边栏宽度（可调整） */
-  }
-
-  /* ===============================
-     侧边栏样式
-     =============================== */
-
-  /* 侧边栏整体布局：从导航栏下方开始，固定宽度，右侧橙色分割线 */
-  .VPSidebar {
-    top: var(--vp-nav-height) !important;
-    height: calc(100vh - var(--vp-nav-height)) !important;
-    width: var(--vp-sidebar-width) !important;
-    min-width: var(--vp-sidebar-width) !important;
-    max-width: var(--vp-sidebar-width) !important;
-    overflow-x: auto;            /* 内容超宽时出现横向滚动条 */
-    overflow-y: auto;            /* 保持纵向滚动 */
-    padding-top: 0.8rem !important;
-    padding-left: 1.5rem !important;
-    border-right: 1px solid #ff6600 !important; /* 橙色分割线 */
-  }
-
-    .VPNavBar.has-sidebar .title {
-      width: 167px;
-    }
+/* 全局字体变量 */
+:root {
+  --vp-font-family-base: 'LXGWWenKai', 'Inter', '系统备选字体', sans-serif;
+  --vp-font-family-head: 'LXGWWenKai', 'Inter', '系统备选字体', sans-serif;
+  --vp-sidebar-width: 200px; /* 侧边栏宽度 */
+}
 
 
-  /* 移除分组之间的默认上边框 */
-  .VPSidebar .group + .group {
-    border-top: none !important;
-  }
-
-  /* 最后一个分组底部不留多余间距 */
-  .VPSidebar .group:last-child {
-    margin-bottom: 0 !important;
-  }
-
-  /* 分组标题字体大小 */
-  .VPSidebar .group .title {
-    font-size: 1rem !important;
-  }
-
-  /* 嵌套分组标题的缩进（二级及以上） */
-  .VPSidebar .group .group .title {
-    padding-left: 1.8rem !important;
-  }
-  .VPSidebar .group .group .group .title {
-    padding-left: 2.8rem !important;
-  }
-
-  /* 侧边栏中文本（如链接文字）大小 */
-  .VPSidebar .text {
-    font-size: 17px !important;
-  }
-
-  /* 侧边栏链接项样式（包括缩进和字体） */
-  .VPSidebar .items .link {
-    padding-left: 1rem !important;   /* 相对于父级缩进 */
-    font-size: 1rem !important;      /* 链接字体大小 */
-  }
-
-  /* 侧边栏整体内容的内边距（保持结构） */
-  .VPSidebar .items {
-    padding-left: 1rem !important;   /* 子项整体左移 */
-  }
-
-  /* ===============================
-     内容区样式（文章主体）
-     =============================== */
-
-  /* 文档内容容器：靠左上，内边距微调，最大宽度限制 */
-  .content-container {
-    padding: 1.8rem 0.1rem 0.1rem 0.1rem !important; /* 上 右 下 左 */
-    margin: 0 !important;
-    max-width: 1000px !important;
-  }
-
-  /* 确保 VPDoc 及其内部没有额外边距干扰 */
-  .VPDoc,
-  .VPDoc .content {
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  /* 文章主标题靠上一点 */
-  .vp-doc h1:first-of-type {
-    margin-top: 0.8rem !important;
-  }
-
-  /* ===============================
-     右侧大纲（TOC）样式
-     =============================== */
-
-  /* 大纲容器：浅灰背景、圆角、居中 */
-  .VPDocOutline {
-    background-color: #f9fafb !important;
-    border-radius: 8px !important;
-    padding: 1rem !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-    margin-top: 1rem !important;
-    text-align: center !important;          /* 容器内所有内容居中 */
-  }
-
-  /* 大纲标题：带 emoji，居中 */
-  .outline-title {
-    font-size: 1.1rem !important;
-    font-weight: 600 !important;
-    color: #1f2937 !important;
-    margin-bottom: 0.75rem !important;
-    padding-bottom: 0.5rem !important;
-    border-bottom: 1px solid #e5e7eb !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-  }
-
-  .outline-title::before {
-    content: "📚" !important;
-    font-size: 1.2em !important;
-  }
-
-  /* 大纲列表容器：整体居中，内部左对齐 */
-  .VPDocOutline ul,
-  .VPDocOutline ol {
-    list-style: none !important;
-    padding-left: 0 !important;
-    display: inline-block !important;   /* 使列表块居中 */
-    text-align: left !important;        /* 列表内容左对齐 */
-    width: auto !important;
-  }
-
-  /* 每个列表项 */
-  .outline-item {
-    margin: 0.4rem 0 !important;
-  }
-
-  /* 目录链接样式 */
-  .outline-link {
-    color: #4b5563 !important;
-    text-decoration: none !important;
-    display: inline-block !important;
-    padding: 0.2rem 0.4rem !important;
-    transition: color 0.2s !important;
-    border-radius: 4px !important;
-  }
-
-  .outline-link:hover {
-    color: #2563eb !important;
-    background-color: rgba(37, 99, 235, 0.05) !important;
-  }
-
-  /* ===============================
-     导航栏搜索框样式
-     =============================== */
-
-  .VPNavBarSearch {
-    flex-grow: 0.1 !important;          /* 控制搜索框伸缩比例 */
-  }
-
-  .VPNavBarSearchButton {
-    padding: 0.4rem 24px !important;    /* 按钮内边距 */
-    font-size: 20px !important;          /* 搜索按钮图标/文字大小 */
-  }
-
-  /* ===============================
-     自定义提示框（笔记）
-     =============================== */
-
-  .custom-block.tip {
-    border-left: 4px solid #3b82f6 !important; /* 蓝色竖线 */
-    background-color: #eff6ff !important;      /* 浅蓝背景 */
-    padding: 1rem 1.5rem;
-    border-radius: 0.5rem;
-    margin: 1.5rem 0;
-  }
-
-  .custom-block.tip .custom-block-title {
-    font-weight: 600;
-    color: #1e40af;
-    margin-bottom: 0.5rem;
-    display: block;
-  }
-
-  .custom-block.tip p {
-    margin: 0;
-    line-height: 1.7;
-    color: #1e3a8a;
-  }
-
-  /* ===============================
-     其他调整
-     =============================== */
-
-  /* 右侧大纲区域宽度限制 */
-  .VPDoc .aside {
-    max-width: 256px !important;
-  }
 
 
-  /* 当侧边栏隐藏时（.sidebar-hidden 类作用在父容器） */
+
+/* ===============================
+   侧边栏样式
+   =============================== */
+
+
+
+
+.VPSidebar {
+  top: var(--vp-nav-height) !important;
+  height: calc(100vh - var(--vp-nav-height)) !important;
+  width: var(--vp-sidebar-width) !important;
+  min-width: var(--vp-sidebar-width) !important;
+  max-width: var(--vp-sidebar-width) !important;
+  overflow-x: auto;
+  overflow-y: auto;
+  padding-top: 0.8rem !important;
+  padding-left: 1.5rem !important;
+  border-right: 1px solid #ff6600 !important;
+}
+
+.VPNavBar.has-sidebar .title {
+  width: 167px;
+}
+
+.VPSidebar .group + .group {
+  border-top: none !important;
+}
+
+.VPSidebar .group:last-child {
+  margin-bottom: 0 !important;
+}
+
+.VPSidebar .group .title {
+  font-size: 1rem !important;
+}
+
+.VPSidebar .group .group .title {
+  padding-left: 1.8rem !important;
+}
+
+.VPSidebar .group .group .group .title {
+  padding-left: 2.8rem !important;
+}
+
+.VPSidebar .text {
+  font-size: 17px !important;
+}
+
+.VPSidebar .items .link {
+  padding-left: 1rem !important;
+  font-size: 1rem !important;
+}
+
+.VPSidebar .items {
+  padding-left: 1rem !important;
+}
+
+/* ===============================
+   内容区样式
+   =============================== */
+
+.content-container {
+  padding: 1.8rem 0.1rem 0.1rem 0.1rem !important;
+  margin: 0 !important;
+  max-width: 1000px !important;
+}
+
+.VPDoc,
+.VPDoc .content {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.vp-doc h1:first-of-type {
+  margin-top: 0.8rem !important;
+}
+
+/* ===============================
+   右侧大纲（TOC）样式
+   =============================== */
+
+.VPDocOutline {
+  background-color: #f9fafb !important;
+  border-radius: 8px !important;
+  padding: 1rem !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  margin-top: 1rem !important;
+  text-align: center !important;
+}
+
+.outline-title {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  color: #1f2937 !important;
+  margin-bottom: 0.75rem !important;
+  padding-bottom: 0.5rem !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.outline-title::before {
+  content: "📚" !important;
+  font-size: 1.2em !important;
+}
+
+.VPDocOutline ul,
+.VPDocOutline ol {
+  list-style: none !important;
+  padding-left: 0 !important;
+  display: inline-block !important;
+  text-align: left !important;
+  width: auto !important;
+}
+
+.outline-item {
+  margin: 0.4rem 0 !important;
+}
+
+.outline-link {
+  color: #4b5563 !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  padding: 0.2rem 0.4rem !important;
+  transition: color 0.2s !important;
+  border-radius: 4px !important;
+}
+
+.outline-link:hover {
+  color: #2563eb !important;
+  background-color: rgba(37, 99, 235, 0.05) !important;
+}
+
+/* 右侧大纲项居中（可选） */
+.VPDocAside .outline-item {
+  text-align: center;
+  list-style-position: inside;
+}
+
+.VPDocAside .outline-link {
+  display: block;
+  text-align: center;
+  padding: 0.2rem 0;
+}
+
+/* ===============================
+   自定义提示框（笔记）
+   =============================== */
+
+.custom-block.tip {
+  border-left: 4px solid #3b82f6 !important;
+  background-color: #eff6ff !important;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  margin: 1.5rem 0;
+}
+
+.custom-block.tip .custom-block-title {
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.custom-block.tip p {
+  margin: 0;
+  line-height: 1.7;
+  color: #1e3a8a;
+}
+
+/* ===============================
+   其他调整
+   =============================== */
+
+/* 右侧大纲区域宽度限制 */
+.VPDoc .aside {
+  max-width: 256px !important;
+}
+
+/* 侧边栏隐藏时的内容区宽度调整 */
 .sidebar-hidden .content-container {
-  max-width: 1200px !important;  /* 原来可能是1000px，调大以利用更多空间 */
-  /* 也可以使用百分比，例如 width: 90%; 但 max-width 更灵活 */
+  max-width: 1200px !important;
 }
 
 .sidebar-hidden .VPDoc .aside {
-  max-width: 200px !important;   /* 原来256px，减小目录宽度 */
-  width: 200px !important;        /* 固定宽度，确保占位精确 */
+  max-width: 200px !important;
+  width: 200px !important;
 }
 
-/* 让右侧大纲的每个列表项居中 */
-.VPDocAside .outline-item {
-  text-align: center;        /* 文字居中 */
-  list-style-position: inside; /* 如果有点符号，让符号也随文字居中（可选） */
-}
-
-/* 如果列表项内的链接需要占满整行，可以设置 */
-.VPDocAside .outline-link {
-  display: block;            /* 让链接块级化，方便整体居中 */
-  text-align: center;        /* 链接文本居中 */
-  padding: 0.2rem 0;         /* 适当增加内边距，美观 */
-}
+/* ===============================
+   打印样式
+   =============================== */
 
 @media print {
-  /* 隐藏导航、侧边栏、页脚等 */
   .VPNav,
   .VPSidebar,
   .VPDocFooter,
   .aside {
     display: none !important;
   }
-
-  /* 调整内容区域宽度 */
   .VPContent {
     margin: 0 !important;
     padding: 0 !important;
   }
-
-  /* 确保正文区域占据整页 */
   .vp-doc {
     max-width: 100% !important;
   }
-}
-/* 搜索框容器 */
-.DocSearch-Container {
-  --docsearch-primary-color: #646cff;
-}
-
-/* 搜索结果高亮 */
-.DocSearch-Hit mark {
-  color: #646cff;
-  font-weight: bold;
-  background: transparent;
-}
-
-/* 搜索结果框最大高度，支持滚动 */
-.DocSearch-Hits {
-  max-height: 80vh;
-  overflow-y: auto;
-}
-/* 让搜索框始终显示（覆盖默认的隐藏逻辑） */
-.DocSearch-Button {
-  display: flex !important;       /* 强制显示为 flex，原可能被隐藏 */
-  width: 200px;                   /* 设置固定宽度 */
-  height: 36px;
-  background: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 18px;
-  padding: 0 12px;
-  cursor: text;
-}
-
-/* 隐藏原来的按钮文字（如“搜索”），只保留放大镜图标 */
-.DocSearch-Button .DocSearch-Button-Placeholder {
-  display: none;
-}
-
-/* 调整按键提示（如 Ctrl+K）的样式 */
-.DocSearch-Button .DocSearch-Button-Keys {
-  margin-left: auto;
-}
-
-/* 搜索结果下拉容器：定位在搜索框下方 */
-.DocSearch-Container {
-  position: fixed !important;
-  top: calc(var(--vp-nav-height) + 10px) !important;
-  left: auto !important;
-  right: 20px !important;
-  width: 400px !important;
-  max-height: 400px !important;
-  background: var(--vp-c-bg);
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  z-index: 100;
-}
-
-/* 让输入框实际可点击区域是整个按钮 */
-.DocSearch-Button input {
-  /* 插件没有直接提供输入框，但可以通过 JS 控制，这里简化处理 */
 }

@@ -1,67 +1,61 @@
 {
-  "hash": "16de4ce5",
+  "hash": "6ae8d022",
   "configHash": "9535c07b",
-  "lockfileHash": "1e6ece1b",
-  "browserHash": "22846162",
+  "lockfileHash": "84569d53",
+  "browserHash": "cf684306",
   "optimized": {
     "vue": {
       "src": "../../../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "8203e387",
+      "fileHash": "dc07bdc4",
       "needsInterop": false
     },
     "vitepress > @vue/devtools-api": {
       "src": "../../../../node_modules/@vue/devtools-api/dist/index.js",
       "file": "vitepress___@vue_devtools-api.js",
-      "fileHash": "e7b732c2",
+      "fileHash": "cf3c484d",
       "needsInterop": false
     },
     "vitepress > @vueuse/core": {
       "src": "../../../../node_modules/@vueuse/core/dist/index.js",
       "file": "vitepress___@vueuse_core.js",
-      "fileHash": "e8bb2036",
+      "fileHash": "7dc9c447",
       "needsInterop": false
     },
     "html2canvas": {
       "src": "../../../../node_modules/html2canvas/dist/html2canvas.esm.js",
       "file": "html2canvas.js",
-      "fileHash": "3aa78e78",
+      "fileHash": "2334790d",
       "needsInterop": false
     },
     "jspdf": {
       "src": "../../../../node_modules/jspdf/dist/jspdf.es.min.js",
       "file": "jspdf.js",
-      "fileHash": "89bc045e",
+      "fileHash": "8e1fb9d8",
       "needsInterop": false
     },
-    "flexsearch": {
-      "src": "../../../../node_modules/flexsearch/dist/flexsearch.bundle.module.min.mjs",
-      "file": "flexsearch.js",
-      "fileHash": "d03541b3",
-      "needsInterop": false
+    "gray-matter": {
+      "src": "../../../../node_modules/gray-matter/index.js",
+      "file": "gray-matter.js",
+      "fileHash": "b3797e51",
+      "needsInterop": true
     }
   },
   "chunks": {
-    "index.es-7RIPWBNV": {
-      "file": "index__es-7RIPWBNV.js"
-    },
     "chunk-IKY3COGX": {
       "file": "chunk-IKY3COGX.js"
+    },
+    "purify.es-4JGIKREH": {
+      "file": "purify__es-4JGIKREH.js"
+    },
+    "index.es-WBISL5EO": {
+      "file": "index__es-WBISL5EO.js"
     },
     "chunk-2ALL2YQY": {
       "file": "chunk-2ALL2YQY.js"
     },
-    "worker_threads-GIUSICMM": {
-      "file": "worker_threads-GIUSICMM.js"
-    },
-    "chunk-NIOWPNHV": {
-      "file": "chunk-NIOWPNHV.js"
-    },
-    "purify.es-5EKTLXSE": {
-      "file": "purify__es-5EKTLXSE.js"
-    },
-    "chunk-5WRI5ZAA": {
-      "file": "chunk-5WRI5ZAA.js"
+    "chunk-7D4SUZUM": {
+      "file": "chunk-7D4SUZUM.js"
     }
   }
 }

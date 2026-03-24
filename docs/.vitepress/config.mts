@@ -1,15 +1,33 @@
 import { defineConfig } from 'vitepress'
 import { generateSidebar, folderNameMap } from './sidebar.mts'
+import fs from 'fs'
+import path from 'path'
 
+// 需要排除的目录（不生成侧边栏分组）
+const excludeDirs = ['.vitepress', 'public', 'node_modules', 'dist','theme','scripts','fonts']
 
+// 动态生成 sidebar 数组
+const getSidebar = () => {
+  // 获取 docs 目录的绝对路径
+  const docsDir = path.resolve(__dirname, '../articles')
+  // 读取所有一级目录
+  const dirs = fs.readdirSync(docsDir, { withFileTypes: true })
+    .filter(d => d.isDirectory() && !excludeDirs.includes(d.name))
+    .map(d => d.name)
 
+  return dirs.map(dir => ({
+    // 优先使用映射表中的中文名，否则显示目录原名（英文）
+    text: folderNameMap[dir] || dir,
+    collapsible: true,
+    collapsed: true,
+    items: generateSidebar(`articles/${dir}`, `articles/${dir}`)   // 递归扫描该目录下的内容
+  }))
+}
 
 export default defineConfig({
-
   base: '/',
   title: '我的博客',
   description: '记录学习与生活',
-
 
   // ✨ 新增加的部分：用于控制 Markdown 的全局行为 ✨
   markdown: {
@@ -62,35 +80,11 @@ export default defineConfig({
       { text: '周刊', link: '/weekly/' },
       { text: '关于', link: '/about' },
       { text: '友链', link: '/links' },
-      { text: 'GitHub', link: 'https://github.com/itwangc' },
+      { text: 'GitHub', link: 'https://github.com/WdGarden/' },
     ],
-//     search: {
-//   provider: 'local',
-//   options: {
-//     translations: {
-//       button: { buttonText: '搜索', buttonAriaLabel: '搜索' },
-//       modal: { displayDetails: '显示详情', resetButtonTitle: '重置', backButtonTitle: '返回', noResultsText: '没有结果', footer: { selectText: '选择', navigateText: '导航', closeText: '关闭' } }
-//     }
-//   }
-// },
-
 
     // 自动生成的侧边栏
-    sidebar: [
-      {
-        text: folderNameMap['years'] || '年份',  // 使用映射显示中文
-        collapsible: true,
-        collapsed: true,
-        items: generateSidebar('years')  // 自动扫描 docs/years 下的内容
-      },
-      {
-        text: folderNameMap['family'] || '家人物语',
-        collapsible: true,
-        collapsed: true,
-        items: generateSidebar('family') // 自动扫描 docs/family 下的内容
-      }
-      // 如果你希望根目录（/）下也显示其他内容，可以继续添加
-    ],
+    sidebar: getSidebar(),
 
   
     outline: {
@@ -98,7 +92,7 @@ export default defineConfig({
       level: [2, 3], // 只显示 h2 和 h3 标题（可选）
     },
     docFooter: { prev: '上一篇', next: '下一篇' },
-    socialLinks: [{ icon: 'github', link: 'https://github.com/你的用户名' }]
+    socialLinks: [{ icon: 'github', link: 'https://github.com/WdGarden/' }]
   },
 
 })
