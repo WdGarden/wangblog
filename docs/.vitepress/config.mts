@@ -65,13 +65,13 @@ export default defineConfig({
   },
 
   themeConfig: {
-    lastUpdated: {
-      text: '最后更新', // 显示的文字
-      formatOptions: { // 可选：日期格式
-        dateStyle: 'full',
-        timeStyle: 'medium'
-      }
-    },
+    // lastUpdated: {
+    //   text: '最后更新', // 显示的文字
+    //   formatOptions: { // 可选：日期格式
+    //     dateStyle: 'full',
+    //     timeStyle: 'medium'
+    //   }
+    // },
     nav: [
       { text: '首页', link: '/' },
       { text: '运维', link: '/ops/' },
@@ -85,8 +85,6 @@ export default defineConfig({
 
     // 自动生成的侧边栏
     sidebar: getSidebar(),
-
-  
     outline: {
       label: '目录', // 自定义标题文字
       level: [2, 3], // 只显示 h2 和 h3 标题（可选）
