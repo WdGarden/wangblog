@@ -14,7 +14,9 @@ export const folderNameMap: Record<string, string> = {
   family: '家庭物语',
   years: '编年体',
   English: '英语',
-  running: '跑步'
+  running: '跑步',
+  articles: '文章',
+  Index: '介绍'
 }
 
 /**

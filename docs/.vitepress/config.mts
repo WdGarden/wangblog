@@ -31,7 +31,8 @@ export default defineConfig({
 
   // ✨ 新增加的部分：用于控制 Markdown 的全局行为 ✨
   markdown: {
-    config(md) {
+     
+      config(md) {
       const originalParse = md.parse
       md.parse = function(src, env) {
       // 1. 移除 frontmatter 部分（--- 之间的内容）
@@ -63,7 +64,9 @@ export default defineConfig({
       permalink: false
     }
   },
-
+ head: [
+    ['link', { rel: 'icon', href: '/favicon.png' }]
+  ],
   themeConfig: {
     // lastUpdated: {
     //   text: '最后更新', // 显示的文字
@@ -75,14 +78,14 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: '运维', link: '/ops/' },
-      { text: '生活', link: '/life/' },
+      { text: '生活', link: '/articles/' },
       { text: '编程', link: '/coding/' },
       { text: '周刊', link: '/weekly/' },
       { text: '关于', link: '/about' },
       { text: '友链', link: '/links' },
-      { text: 'GitHub', link: 'https://github.com/WdGarden/' },
+      
     ],
-
+ 
     // 自动生成的侧边栏
     sidebar: getSidebar(),
     outline: {

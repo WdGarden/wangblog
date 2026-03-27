@@ -125,9 +125,10 @@ const breadcrumb = computed(() => {
   }
 
   const fileName = path[path.length - 1]?.replace('.md', '').replace(/-/g, ' ')
-  if (fileName) {
-    // 文件名也可以考虑映射，但通常不需要，如果文件名是英文，可以首字母大写
-    crumbs.push({ text: fileName.replace(/\b\w/g, l => l.toUpperCase()) })
+if (fileName) {
+    // 如果当前页面是 index.md，显示为“介绍”
+    const displayName = fileName === 'index' ? '介绍' : fileName.replace(/-/g, ' ')
+    crumbs.push({ text: displayName })
   }
 
   return crumbs

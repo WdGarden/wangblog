@@ -23,6 +23,10 @@ provide('sidebar', {
   <div class="custom-layout" :class="{ 'sidebar-hidden': !sidebarOpen }">
     
     <Layout>
+
+       <template #nav-bar-title-before>
+        <img src="../public/images/avatar.png" alt="头像" class="nav-avatar">
+      </template>
       <template #doc-before>
         <PageMeta />
       </template>
@@ -47,5 +51,16 @@ provide('sidebar', {
 .VPSidebar,
 .VPContent {
   transition: all 0.8s ease;
+}
+
+/* 头像样式：圆形、等比例缩小、与文字对齐 */
+.nav-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-right: 18px; /* 与标题文字的距离 */
+  margin-left: -80px;
 }
 </style>

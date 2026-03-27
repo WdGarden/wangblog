@@ -30,7 +30,9 @@ body {
 }
 
 
-
+strong, b {
+  font-weight: 1000 !important; /* 或 600、bold */
+}
 
 
 /* ===============================
