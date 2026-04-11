@@ -89,7 +89,7 @@ async transformPageData(pageData, { siteConfig }) {
     author: 'itwangc',
     original: true,
     date: birthtime ? formatYMD(birthtime) : new Date().toISOString().slice(0, 10),
-    lastUpdated: lastCommitTime || new Date().toISOString()  // 优先使用 Git 时间
+    // lastUpdated: lastCommitTime || new Date().toISOString()  // 优先使用 Git 时间
   }
 
   pageData.frontmatter = {
@@ -136,7 +136,7 @@ async transformPageData(pageData, { siteConfig }) {
       permalink: false   // 关闭标题悬停时的 # 链接符号
     }
   },
-
+ lastUpdated: true, // string | boolean
   // ----- 主题配置（默认主题）-----
   themeConfig: {
     // 导航栏 Logo（支持亮色/暗色模式）
@@ -147,10 +147,7 @@ async transformPageData(pageData, { siteConfig }) {
     },
     siteTitle: false,  // 只显示 Logo，不显示文字标题
     
-lastUpdated: {
-    text: '最后更新',        // 显示的文本
-   formatOptions: { dateStyle: 'short', timeStyle: 'short' }
-  },
+ lastUpdatedText: "最后更新", // string
     // 导航栏菜单（支持下拉）
     nav: [
       { text: '首页', link: '/' },
