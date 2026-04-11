@@ -4,6 +4,8 @@ import { generateSidebar, folderNameMap } from './sidebar.mts'
 import { SearchPlugin } from 'vitepress-plugin-search'
 import fs from 'fs'
 import path from 'path'
+import { execSync } from 'child_process'
+
 
 // ========== 工具函数 ==========
 
@@ -55,12 +57,26 @@ async transformPageData(pageData, { siteConfig }) {
   const filePath = pageData.filePath
   const fileName = path.basename(filePath, '.md')
 
+  // 获取文件的 Git 最后提交时间（独立于全局提交）
+  let lastCommitTime = null
+  try {
+    // 注意：filePath 是相对于项目根目录的路径（例如 docs/articles/xxx.md）
+    const gitLog = execSync(
+      `git log -1 --format=%aI -- "${filePath}"`,
+      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }
+    ).trim()
+    if (gitLog) {
+      lastCommitTime = gitLog
+    }
+  } catch (e) {
+    // 文件未被 Git 跟踪或没有提交记录，忽略
+  }
+
+  // 获取文件创建时间（用于 date）
   let birthtime = null
-  let mtime = null
   try {
     const stats = fs.statSync(filePath)
     birthtime = stats.birthtime
-    mtime = stats.mtime
   } catch (e) {}
 
   const formatYMD = (date: Date | null) => {
@@ -73,7 +89,7 @@ async transformPageData(pageData, { siteConfig }) {
     author: 'itwangc',
     original: true,
     date: birthtime ? formatYMD(birthtime) : new Date().toISOString().slice(0, 10),
-    lastUpdated: mtime ? mtime.toISOString() : new Date().toISOString()
+    lastUpdated: lastCommitTime || new Date().toISOString()  // 优先使用 Git 时间
   }
 
   pageData.frontmatter = {
