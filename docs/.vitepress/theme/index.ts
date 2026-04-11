@@ -1,8 +1,11 @@
 // docs/.vitepress/theme/index.ts
 import DefaultTheme from 'vitepress/theme'
 import Layout from './Layout.vue'          // 导入你的自定义布局
+
 import { setupFireworks } from './fireworks'
 import './custom.css'
+
+
 
 export default {
   extends: DefaultTheme,

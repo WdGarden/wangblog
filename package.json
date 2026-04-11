@@ -2,7 +2,9 @@
   "devDependencies": {
     "fast-glob": "^3.3.3",
     "flexsearch": "^0.8.212",
-    "vitepress": "^2.0.0-alpha.16"
+    "vitepress": "^2.0.0-alpha.16",
+    "vitepress-plugin-pagefind": "^0.4.19",
+    "vitepress-plugin-search": "^1.0.4-alpha.22"
   },
   "scripts": {
     "docs:dev": "vitepress dev docs",

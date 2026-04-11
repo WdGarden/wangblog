@@ -10,7 +10,7 @@ hero:
       text: 开始阅读
       link: /posts/hello
     - theme: alt
-      text: 查看 GitHub
+      text: 查看 {{ $frontmatter.title }}
       link: https://github.com/你的用户名
 features:
   - title: 📝 技术笔记

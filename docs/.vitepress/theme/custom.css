@@ -8,7 +8,7 @@ body {
 /* 字体定义：霞鹜文楷 */
 @font-face {
   font-family: 'LXGWWenKai';
-  src: url('/fonts/LXGWWenKai-Regular.ttf') format('truetype');
+  src: url('../public/fonts/LXGWWenKai-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -16,7 +16,7 @@ body {
 
 @font-face {
   font-family: 'LXGWWenKai';
-  src: url('/fonts/LXGWWenKai-Light.ttf') format('truetype');
+  src: url('../public/fonts/LXGWWenKai-Light.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -244,4 +244,18 @@ strong, b {
   .vp-doc {
     max-width: 100% !important;
   }
+  
+}
+
+/* 导航栏 Logo 圆形样式 + 放大尺寸 */
+.VPNavBar .logo {
+  border-radius: 50% !important;
+  object-fit: cover;
+  width: 45px !important;   /* 原尺寸通常为 24px，调大 */
+  height: 45px !important;  /* 与宽度一致保持圆形 */
+  margin-left: 0 !important;
+  margin-right: 15px;
+}
+.VPNavBar .title {
+  padding-left: 15px  !important;
 }
