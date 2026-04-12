@@ -54,7 +54,7 @@
         </span>
 
         <span class="original-tag" v-if="frontmatter.original">原创</span>
-        <button @click="downloadPDF" class="pdf-btn">📄 下载 PDF</button>
+        <button @click="downloadPDF" class="pdf-btn">📑 PDF</button>
       </div>
     </div>
   </div>
@@ -123,73 +123,83 @@ const downloadPDF = async () => {
   }
 
   try {
-    // 1. 获取元素实际高度（关键：确保获取完整高度，防止截断）
-    const elementHeight = element.scrollHeight; // 使用 scrollHeight 而非 offsetHeight
-    const elementWidth = element.offsetWidth;
+    // 1. 获取元素实际尺寸（完整内容）
+    const elementWidth = element.scrollWidth
+    const elementHeight = element.scrollHeight
 
-    // 2. 计算高清 Canvas 尺寸
-    // A4 纸张比例约为 1:1.414，我们需要根据内容宽度计算高度，或根据高度计算宽度，取较小值以适应
-    const scale = 1.8; // 高清缩放
-    const canvasWidth = elementWidth * scale;
-    
-    // 计算 PDF 内容高度（保持宽高比）
-    // 这里我们直接使用元素的实际滚动高度，确保内容完整
-    const canvasHeight = elementHeight * scale;
-
-    // 3. 截图配置优化
+    // 2. 截图（高清）
+    const scale = 2 // 提高清晰度
     const canvas = await html2canvas(element, {
       scale: scale,
       logging: false,
       useCORS: true,
       backgroundColor: '#ffffff',
-      // 关键配置：确保截图包含所有滚动内容
       width: elementWidth,
       height: elementHeight,
-      // 有些情况下需要设置 windowWidth 来模拟视口
-      windowWidth: document.documentElement.clientWidth,
-      windowHeight: document.documentElement.clientHeight,
-    });
+      windowWidth: elementWidth,
+      windowHeight: elementHeight
+    })
 
-    // 4. PDF 设置与居中逻辑
+    // 3. PDF 设置（A4 纵向）
     const pdf = new jsPDF({
-      orientation: 'portrait', // 通常文章用纵向
+      orientation: 'portrait',
       unit: 'px',
-      format: 'a4' // [width, height] 默认 A4 尺寸
-    });
+      format: 'a4'
+    })
 
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = pdf.internal.pageSize.getHeight();
+    const pdfWidth = pdf.internal.pageSize.getWidth()
+    const pdfHeight = pdf.internal.pageSize.getHeight()
 
-    // 计算图片在 PDF 中的尺寸
-    // 保持宽高比缩放，防止变形
-    const ratio = Math.min(pdfWidth / canvasWidth, pdfHeight / canvasHeight);
-    const imgWidth = canvasWidth * ratio;
-    const imgHeight = canvasHeight * ratio;
+    // 4. 计算图片在 PDF 中的宽度（撑满宽度，高度按比例）
+    const imgWidth = pdfWidth
+    const imgHeight = (canvas.height * imgWidth) / canvas.width
 
-    // 计算居中坐标
-    // (页面宽度 - 图片宽度) / 2
-    const x = (pdfWidth - imgWidth) / 2;
-    // Y 轴通常从 10px 开始留边，也可以 (pdfHeight - imgHeight) / 2 实现垂直居中
-    const y = 10; 
+    // 5. 分页逻辑：计算需要多少页
+    let remainingHeight = imgHeight
+    let currentPage = 0
 
-    // 5. 添加图片
-    pdf.addImage(
-      canvas.toDataURL('image/jpeg', 0.85), // 使用 JPEG 减小体积，质量 0.95
-      'JPEG', 
-      x, 
-      y, 
-      imgWidth, 
-      imgHeight, 
-      undefined, 
-      'FAST'
-    );
+    while (remainingHeight > 0) {
+      // 当前页要裁剪的高度（不超过 PDF 高度）
+      const pageHeight = Math.min(pdfHeight, remainingHeight)
 
-    pdf.save('article.pdf');
+      // 从原 canvas 中裁剪出当前页对应的部分
+      const pageCanvas = document.createElement('canvas')
+      pageCanvas.width = canvas.width
+      pageCanvas.height = (pageHeight / imgHeight) * canvas.height
+      const ctx = pageCanvas.getContext('2d')
+      ctx.drawImage(
+        canvas,
+        0,
+        (currentPage * pdfHeight / imgHeight) * canvas.height, // 源Y坐标
+        canvas.width,
+        pageCanvas.height,
+        0,
+        0,
+        canvas.width,
+        pageCanvas.height
+      )
+
+      const pageImgData = pageCanvas.toDataURL('image/jpeg', 0.95)
+
+      // 水平居中计算
+      const xOffset = (pdfWidth - imgWidth) / 2
+
+      if (currentPage === 0) {
+        pdf.addImage(pageImgData, 'JPEG', xOffset, 0, imgWidth, pageHeight, undefined, 'FAST')
+      } else {
+        pdf.addPage()
+        pdf.addImage(pageImgData, 'JPEG', xOffset, 0, imgWidth, pageHeight, undefined, 'FAST')
+      }
+
+      remainingHeight -= pageHeight
+      currentPage++
+    }
+
+    pdf.save('article.pdf')
   } catch (error) {
     console.error('PDF 生成失败:', error)
     alert('生成失败，请稍后重试')
   }
-
 }
 </script>
 

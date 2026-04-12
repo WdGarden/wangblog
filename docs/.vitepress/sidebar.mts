@@ -12,11 +12,12 @@ export const folderNameMap: Record<string, string> = {
   childhood: '童年',
   youth: '青年',
   family: '家庭物语',
-  years: '编年体',
-  English: '英语',
-  running: '跑步',
+  me: '自己',
   articles: '文章',
-  Index: '介绍'
+  time: '岁月',
+  Index: '介绍',
+  father: '爸爸',
+  mother: '妈妈'
 }
 
 /**
