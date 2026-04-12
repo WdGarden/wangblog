@@ -46,45 +46,37 @@ export default defineConfig({
 
   // ----- 构建钩子：自动为所有页面注入默认 frontmatter（不含 lastUpdated）-----
   async transformPageData(pageData) {
-  if (!pageData.filePath) return pageData
+    if (!pageData.filePath) return pageData
 
-  const filePath = pageData.filePath
-  const fileName = path.basename(filePath, '.md')
+    const filePath = pageData.filePath
+    const fileName = path.basename(filePath, '.md')
 
-  // 获取 Git 首次提交时间（作为创建日期）
-  let firstCommitTime = null
-  try {
-    // 注意：--follow 会跟踪文件重命名，获取最早的提交
-    const gitLog = execSync(
-      `git log --follow --format=%aI -- "${filePath}" | tail -1`,
-      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }
-    ).trim()
-    if (gitLog) {
-      firstCommitTime = gitLog.slice(0, 10) // 取 YYYY-MM-DD
+    // 获取文件创建时间（用于 date）
+    let birthtime = null
+    try {
+      const stats = fs.statSync(filePath)
+      birthtime = stats.birthtime
+    } catch (e) {}
+
+    const formatYMD = (date: Date | null) => {
+      if (!date) return null
+      return date.toISOString().slice(0, 10)
     }
-  } catch (e) {
-    // 文件尚未提交或 Git 命令失败，忽略
-  }
 
-  const formatYMD = (date: string | null) => {
-    if (!date) return null
-    return date.slice(0, 10)
-  }
+    const defaultFrontmatter: any = {
+      title: fileNameToTitle(fileName),
+      author: 'itwangc',
+      original: true,
+      date: birthtime ? formatYMD(birthtime) : new Date().toISOString().slice(0, 10),
+    }
 
-  const defaultFrontmatter: any = {
-    title: fileNameToTitle(fileName),
-    author: 'itwangc',
-    original: true,
-    date: firstCommitTime || new Date().toISOString().slice(0, 10),
-  }
+    pageData.frontmatter = {
+      ...defaultFrontmatter,
+      ...pageData.frontmatter
+    }
 
-  pageData.frontmatter = {
-    ...defaultFrontmatter,
-    ...pageData.frontmatter
-  }
-
-  return pageData
-},
+    return pageData
+  },
 
   // ----- Vite 配置（搜索插件）-----
   vite: {
