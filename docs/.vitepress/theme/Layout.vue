@@ -1,12 +1,17 @@
 <script setup>
-import { ref, provide } from 'vue'
+import { ref, provide,computed  } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import PageMeta from './components/PageMeta.vue'
-import { useData } from 'vitepress'
+import { useData ,useRoute } from 'vitepress'
+import MusicPlayer from './components/MusicPlayer.vue' // 导入
 
 const { Layout } = DefaultTheme
 const { frontmatter } = useData()
+const route = useRoute()
 
+
+// 判断是否为图库相关页面（不显示 PageMeta）
+const isGalleryPage = computed(() => route.path.startsWith('/gallery/'))
 
 // 侧边栏显示状态
 const sidebarOpen = ref(true)
@@ -24,10 +29,15 @@ provide('sidebar', {
 <template>
   <div class="custom-layout" :class="{ 'sidebar-hidden': !sidebarOpen }">
     <Layout>
-      <template #doc-before>
+       <template #nav-bar-content-after>
+        <MusicPlayer />
+      </template>
+      <!-- 只在非图库页面显示 PageMeta -->
+      <template v-if="!isGalleryPage" #doc-before>
         <PageMeta />
       </template>
     </Layout>
+      <MusicPlayer />
   </div>
 </template>
 

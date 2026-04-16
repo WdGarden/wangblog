@@ -1,7 +1,8 @@
 /* ===============================
    全局基础
    =============================== */
-
+/* docs/.vitepress/theme/custom.css */
+@import 'tailwindcss';
 body {
   font-size: 16px; /* 全局字体大小 */
 }

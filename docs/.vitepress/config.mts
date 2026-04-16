@@ -3,6 +3,8 @@ import { generateSidebar, folderNameMap } from './sidebar.mts'
 import { SearchPlugin } from 'vitepress-plugin-search'
 import fs from 'fs'
 import path from 'path'
+import Tailwind from '@tailwindcss/vite'
+import { execSync } from 'child_process'
 
 // ========== 工具函数 ==========
 
@@ -40,56 +42,61 @@ const getSidebar = () => {
 export default defineConfig({
   base: '/',
   title: '我的博客',
-  titleTemplate: false,   // 禁用标题后缀
+  titleTemplate: false,
   description: '记录学习与生活',
   head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
 
-  // ----- 构建钩子：自动为所有页面注入默认 frontmatter（不含 lastUpdated）-----
   async transformPageData(pageData) {
-    if (!pageData.filePath) return pageData
+  if (!pageData.filePath) return pageData
 
-    const filePath = pageData.filePath
-    const fileName = path.basename(filePath, '.md')
+  const filePath = pageData.filePath
+  const fileName = path.basename(filePath, '.md')
 
-    // 获取文件创建时间（用于 date）
-    let birthtime = null
-    try {
-      const stats = fs.statSync(filePath)
-      birthtime = stats.birthtime
-    } catch (e) {}
-
-    const formatYMD = (date: Date | null) => {
-      if (!date) return null
-      return date.toISOString().slice(0, 10)
+  // 获取 Git 首次提交时间（作为创建日期）
+  let firstCommitTime = null
+  try {
+    const gitLog = execSync(
+      `git log --follow --format=%aI -- "${filePath}" | tail -1`,
+      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }
+    ).trim()
+    if (gitLog) {
+      firstCommitTime = gitLog.slice(0, 10) // 取 YYYY-MM-DD
     }
+  } catch (e) {
+    // 文件尚未提交，忽略
+  }
 
-    const defaultFrontmatter: any = {
-      title: fileNameToTitle(fileName),
-      author: 'itwangc',
-      original: true,
-      date: birthtime ? formatYMD(birthtime) : new Date().toISOString().slice(0, 10),
-    }
+  const formatYMD = (date: string | null) => {
+    if (!date) return null
+    return date.slice(0, 10)
+  }
 
-    pageData.frontmatter = {
-      ...defaultFrontmatter,
-      ...pageData.frontmatter
-    }
+  const defaultFrontmatter: any = {
+    title: fileNameToTitle(fileName),
+    author: 'itwangc',
+    original: true,
+    date: firstCommitTime || new Date().toISOString().slice(0, 10),
+  }
 
-    return pageData
-  },
+  pageData.frontmatter = {
+    ...defaultFrontmatter,
+    ...pageData.frontmatter
+  }
 
-  // ----- Vite 配置（搜索插件）-----
+  return pageData
+},
+
   vite: {
     plugins: [
       SearchPlugin({
         tokenize: 'full',
         previewLength: 62,
         placeholder: '搜索文档',
-      })
+      }),
+      Tailwind(),
     ],
   },
 
-  // ----- Markdown 配置（字数统计）-----
   markdown: {
     config(md) {
       const originalParse = md.parse
@@ -115,7 +122,6 @@ export default defineConfig({
     }
   },
 
-  // ----- 主题配置（默认主题）-----
   themeConfig: {
     lastUpdated: {
       text: '最近更新',
@@ -125,48 +131,57 @@ export default defineConfig({
       }
     },
     logo: {
+      dark: '/images/logo.png',
       light: '/images/logo.png',
-      dark: '/images/moon.jpg',
       alt: '博客 Logo'
     },
     siteTitle: false,
 
-    // 导航栏菜单
     nav: [
       { text: '首页', link: '/' },
       {
         text: '运维',
         items: [
-          { text: 'IT硬件知识', link: '/knowledge/hardware' }
+          { text: 'IT硬件知识', link: '/knowledge/hardware/' },
+          { text: 'IT软件知识', link: '/knowledge/software/' },
         ]
       },
       { text: '生活', link: '/articles/' },
       { text: '编程', link: '/coding/' },
-      { text: '友链', link: '/links' },
+      { text: '友链', link: '/links/' },
+      { text: '图库', link: '/gallery/' }
     ],
 
-    // 侧边栏
-    sidebar: getSidebar(),
+    sidebar: {
+      '/articles/': getSidebar(),
+      '/links/': [
+        {
+          text: '常见文档处理工具',
+          items: [
+            { text: '在线转换工具', link: '/links#在线转换工具' },
+            { text: '办公辅助', link: '/links#办公辅助' },
+          ]
+        }
+      ],
+      '/knowledge/hardware/': generateSidebar('knowledge/hardware', 'knowledge/hardware'),
+      '/knowledge/software/': generateSidebar('knowledge/software', 'knowledge/software'),
+    },
 
-    // 右侧大纲
     outline: {
       label: '目录',
       level: [2, 3],
     },
 
-    // 页脚
     footer: {
       message: 'Copyright © 2026-present WdGarden',
       copyright: 'MIT Licensed | Copyright © 2026-present WdGarden'
     },
 
-    // 文档上下页文本
     docFooter: {
       prev: '上一篇',
       next: '下一篇'
     },
 
-    // 社交链接
     socialLinks: [
       { icon: 'github', link: 'https://github.com/WdGarden/' }
     ]

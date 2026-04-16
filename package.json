@@ -1,8 +1,13 @@
 {
   "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "autoprefixer": "^10.5.0",
     "fast-glob": "^3.3.3",
     "flexsearch": "^0.8.212",
+    "postcss": "^8.5.10",
+    "tailwindcss": "^4.2.2",
     "vitepress": "^2.0.0-alpha.16",
+    "vitepress-plugin-lightbox": "^1.0.3",
     "vitepress-plugin-pagefind": "^0.4.19",
     "vitepress-plugin-search": "^1.0.4-alpha.22"
   },
