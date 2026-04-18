@@ -1,91 +1,50 @@
+// docs/.vitepress/config.mts
 import { defineConfig } from 'vitepress'
-import { generateSidebar, folderNameMap } from './sidebar.mts'
 import { SearchPlugin } from 'vitepress-plugin-search'
-import fs from 'fs'
-import path from 'path'
-import Tailwind from '@tailwindcss/vite'
 import { execSync } from 'child_process'
+import path from 'path'
+import { fileNameToTitle, getSidebar } from './theme/utils/configHelpers'
+import { generateSidebar } from './sidebar.mts'
 
-// ========== 工具函数 ==========
-
-/**
- * 将文件名转换为标题（例如 "my-article" -> "My Article"）
- */
-const fileNameToTitle = (fileName: string) => {
-  return fileName
-    .replace(/\.md$/, '')
-    .replace(/[-_]/g, ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase())
-}
-
-// 需要排除的目录（不生成侧边栏分组）
-const excludeDirs = ['.vitepress', 'node_modules', 'dist', 'theme', 'scripts', 'fonts']
-
-/**
- * 动态生成侧边栏（基于 articles 目录）
- */
-const getSidebar = () => {
-  const docsDir = path.resolve(__dirname, '../articles')
-  const dirs = fs.readdirSync(docsDir, { withFileTypes: true })
-    .filter(d => d.isDirectory() && !excludeDirs.includes(d.name))
-    .map(d => d.name)
-
-  return dirs.map(dir => ({
-    text: folderNameMap[dir] || dir,
-    collapsible: true,
-    collapsed: true,
-    items: generateSidebar(`articles/${dir}`, `articles/${dir}`)
-  }))
-}
-
-// ========== VitePress 配置 ==========
 export default defineConfig({
+  // 基础配置
   base: '/',
   title: '我的博客',
   titleTemplate: false,
   description: '记录学习与生活',
-  head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
 
+  // 静态资源路径：直接使用根路径（文件需放在 .vitepress/public/ 下）
+   head: [['link', { rel: 'icon', href: '../.vitepress/public/favicon.ico' }]],
+
+  // 构建钩子：自动注入 frontmatter
   async transformPageData(pageData) {
-  if (!pageData.filePath) return pageData
+    if (!pageData.filePath) return pageData
 
-  const filePath = pageData.filePath
-  const fileName = path.basename(filePath, '.md')
+    const filePath = pageData.filePath
+    const fileName = path.basename(filePath, '.md')
 
-  // 获取 Git 首次提交时间（作为创建日期）
-  let firstCommitTime = null
-  try {
-    const gitLog = execSync(
-      `git log --follow --format=%aI -- "${filePath}" | tail -1`,
-      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }
-    ).trim()
-    if (gitLog) {
-      firstCommitTime = gitLog.slice(0, 10) // 取 YYYY-MM-DD
+    // 获取 Git 首次提交时间（创建日期）
+    let firstCommitTime = null
+    try {
+      const gitLog = execSync(
+        `git log --follow --format=%aI -- "${filePath}" | tail -1`,
+        { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'ignore'] }
+      ).trim()
+      if (gitLog) firstCommitTime = gitLog.slice(0, 10)
+    } catch (e) {}
+
+    const defaultFrontmatter = {
+      title: fileNameToTitle(fileName),
+      author: 'itwangc',
+      original: true,
+      date: firstCommitTime || new Date().toISOString().slice(0, 10),
     }
-  } catch (e) {
-    // 文件尚未提交，忽略
-  }
 
-  const formatYMD = (date: string | null) => {
-    if (!date) return null
-    return date.slice(0, 10)
-  }
+    pageData.frontmatter = { ...defaultFrontmatter, ...pageData.frontmatter }
+    return pageData
+  },
 
-  const defaultFrontmatter: any = {
-    title: fileNameToTitle(fileName),
-    author: 'itwangc',
-    original: true,
-    date: firstCommitTime || new Date().toISOString().slice(0, 10),
-  }
-
-  pageData.frontmatter = {
-    ...defaultFrontmatter,
-    ...pageData.frontmatter
-  }
-
-  return pageData
-},
-
+  // Vite 插件配置
   vite: {
     plugins: [
       SearchPlugin({
@@ -93,10 +52,10 @@ export default defineConfig({
         previewLength: 62,
         placeholder: '搜索文档',
       }),
-      Tailwind(),
     ],
   },
 
+  // Markdown 扩展（字数统计）
   markdown: {
     config(md) {
       const originalParse = md.parse
@@ -113,26 +72,21 @@ export default defineConfig({
 
         if (!env.frontmatter) env.frontmatter = {}
         env.frontmatter.wordCount = wordCount
-
         return originalParse.call(this, src, env)
       }
     },
-    anchor: {
-      permalink: false
-    }
+    anchor: { permalink: false }
   },
 
+  // 主题配置
   themeConfig: {
     lastUpdated: {
       text: '最近更新',
-      formatOptions: {
-        dateStyle: 'full',
-        timeStyle: 'medium'
-      }
+      formatOptions: { dateStyle: 'full', timeStyle: 'medium' }
     },
     logo: {
-      dark: '/images/logo.png',
-      light: '/images/logo.png',
+      dark: '../.vitepress/public/images/logo.png',
+      light: '../.vitepress/public/images/logo.png',
       alt: '博客 Logo'
     },
     siteTitle: false,
@@ -167,23 +121,12 @@ export default defineConfig({
       '/knowledge/software/': generateSidebar('knowledge/software', 'knowledge/software'),
     },
 
-    outline: {
-      label: '目录',
-      level: [2, 3],
-    },
-
+    outline: { label: '目录', level: [2, 3] },
     footer: {
       message: 'Copyright © 2026-present WdGarden',
       copyright: 'MIT Licensed | Copyright © 2026-present WdGarden'
     },
-
-    docFooter: {
-      prev: '上一篇',
-      next: '下一篇'
-    },
-
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/WdGarden/' }
-    ]
+    docFooter: { prev: '上一篇', next: '下一篇' },
+    socialLinks: [{ icon: 'github', link: 'https://github.com/WdGarden/' }]
   }
 })

@@ -1,0 +1,30 @@
+/* 全局基础：字体、变量、body 等 */
+body {
+  font-size: 16px;
+}
+
+@font-face {
+  font-family: 'LXGWWenKai';
+  src: url('../public/fonts/LXGWWenKai-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'LXGWWenKai';
+  src: url('../public/fonts/LXGWWenKai-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --vp-font-family-base: 'LXGWWenKai', 'Inter', '系统备选字体', sans-serif;
+  --vp-font-family-head: 'LXGWWenKai', 'Inter', '系统备选字体', sans-serif;
+  --vp-sidebar-width: 200px;
+}
+
+strong, b {
+  font-weight: 1000 !important;
+}

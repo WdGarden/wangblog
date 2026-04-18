@@ -1,0 +1,14 @@
+/* 导航栏 Logo 圆形样式 + 放大尺寸 */
+.VPNavBar .logo {
+  border-radius: 50% !important;
+  object-fit: cover;
+  width: 45px !important;
+  height: 45px !important;
+  margin-left: 0 !important;
+  margin-right: 15px;
+}
+
+.VPNavBar .title {
+  padding-left: 15px !important;
+}
+

@@ -1,0 +1,50 @@
+/* 侧边栏样式 */
+.VPSidebar {
+  top: var(--vp-nav-height) !important;
+  height: calc(100vh - var(--vp-nav-height)) !important;
+  width: var(--vp-sidebar-width) !important;
+  min-width: var(--vp-sidebar-width) !important;
+  max-width: var(--vp-sidebar-width) !important;
+  overflow-x: auto;
+  overflow-y: auto;
+  padding-top: 0.8rem !important;
+  padding-left: 1.5rem !important;
+  border-right: 1px solid #ff6600 !important;
+}
+
+.VPNavBar.has-sidebar .title {
+  width: 167px;
+}
+
+.VPSidebar .group + .group {
+  border-top: none !important;
+}
+
+.VPSidebar .group:last-child {
+  margin-bottom: 0 !important;
+}
+
+.VPSidebar .group .title {
+  font-size: 1rem !important;
+}
+
+.VPSidebar .group .group .title {
+  padding-left: 1.8rem !important;
+}
+
+.VPSidebar .group .group .group .title {
+  padding-left: 2.8rem !important;
+}
+
+.VPSidebar .text {
+  font-size: 17px !important;
+}
+
+.VPSidebar .items .link {
+  padding-left: 1rem !important;
+  font-size: 1rem !important;
+}
+
+.VPSidebar .items {
+  padding-left: 1rem !important;
+}

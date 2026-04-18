@@ -1,0 +1,16 @@
+/* 内容区样式 */
+.content-container {
+  padding: 1.8rem 0.1rem 0.1rem 0.1rem !important;
+  margin: 0 !important;
+  max-width: 1000px !important;
+}
+
+.VPDoc,
+.VPDoc .content {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.vp-doc h1:first-of-type {
+  margin-top: 0.8rem !important;
+}

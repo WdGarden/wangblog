@@ -9,15 +9,8 @@ const IGNORE = ['.vitepress', 'node_modules', '.DS_Store', 'public', 'fonts']
  * 文件夹名称映射表
  */
 export const folderNameMap: Record<string, string> = {
-  childhood: '童年',
-  youth: '青年',
-  family: '家庭物语',
-  me: '自己',
   articles: '文章',
-  time: '岁月',
   Index: '介绍',
-  father: '爸爸',
-  mother: '妈妈'
 }
 
 /**

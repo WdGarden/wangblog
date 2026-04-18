@@ -1,0 +1,65 @@
+/* 右侧大纲样式 */
+.VPDocOutline {
+  background-color: #f9fafb !important;
+  border-radius: 8px !important;
+  padding: 1rem !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  margin-top: 1rem !important;
+  text-align: center !important;
+}
+
+.outline-title {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  color: #1f2937 !important;
+  margin-bottom: 0.75rem !important;
+  padding-bottom: 0.5rem !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.outline-title::before {
+  content: "📚" !important;
+  font-size: 1.2em !important;
+}
+
+.VPDocOutline ul,
+.VPDocOutline ol {
+  list-style: none !important;
+  padding-left: 0 !important;
+  display: inline-block !important;
+  text-align: left !important;
+  width: auto !important;
+}
+
+.outline-item {
+  margin: 0.4rem 0 !important;
+}
+
+.outline-link {
+  color: #4b5563 !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  padding: 0.2rem 0.4rem !important;
+  transition: color 0.2s !important;
+  border-radius: 4px !important;
+}
+
+.outline-link:hover {
+  color: #2563eb !important;
+  background-color: rgba(37, 99, 235, 0.05) !important;
+}
+
+.VPDocAside .outline-item {
+  text-align: center;
+  list-style-position: inside;
+}
+
+.VPDocAside .outline-link {
+  display: block;
+  text-align: center;
+  padding: 0.2rem 0;
+}

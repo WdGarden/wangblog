@@ -27,16 +27,30 @@
     </div>
   </div>
 </template>
-
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 
-// 替换为你的在线音乐链接
+const getSongNameFromUrl = (url) => {
+  try {
+    // 取出最后一个斜杠后的部分
+    let fileName = decodeURIComponent(url.split('/').pop() || '')
+    // 去掉扩展名（最后一个点后面的部分）
+    const lastDot = fileName.lastIndexOf('.')
+    if (lastDot !== -1) fileName = fileName.substring(0, lastDot)
+    return fileName || '未知歌曲'
+  } catch {
+    return '未知歌曲'
+  }
+}
+
+// 播放列表：只需提供 url，name 自动生成
 const playlist = ref([
-  { name: '夏日午后', url: 'https://iwangc.oss-cn-shanghai.aliyuncs.com/%E7%A8%BB%E9%A6%99-%E5%91%A8%E6%9D%B0%E4%BC%A6.mp3' },
-  { name: '夜曲', url: 'https://iwangc.oss-cn-shanghai.aliyuncs.com/Thomas Greenberg - The Human Touch_H.ogg' },
-  { name: '轻风', url: '' },
-])
+  { url: 'https://iwangc.oss-cn-shanghai.aliyuncs.com/%E7%A8%BB%E9%A6%99-%E5%91%A8%E6%9D%B0%E4%BC%A6.mp3' },
+  { url: 'https://iwangc.oss-cn-shanghai.aliyuncs.com/Thomas%20Greenberg%20-%20The%20Human%20Touch_H.ogg' },
+].map(item => ({
+  ...item,
+  name: getSongNameFromUrl(item.url)
+})))
 
 const currentIndex = ref(0)
 const audio = ref(null)
@@ -49,7 +63,7 @@ const hasNext = computed(() => currentIndex.value < playlist.value.length - 1)
 
 const togglePlay = () => {
   if (audio.value.paused) {
-    audio.value.play()
+    audio.value.play().catch(e => console.error('播放失败:', e))
     isPlaying.value = true
   } else {
     audio.value.pause()
@@ -60,28 +74,54 @@ const togglePlay = () => {
 const selectTrack = (idx) => {
   if (idx === currentIndex.value) return
   currentIndex.value = idx
-  audio.value.src = currentTrack.value.url
-  audio.value.play()
+  const newSrc = currentTrack.value.url
+  audio.value.src = newSrc
+  audio.value.autoplay = true
+  audio.value.load()
+  const playOnLoad = () => {
+    audio.value.play().catch(e => console.warn('自动播放被阻止，请手动点击播放', e))
+    audio.value.removeEventListener('canplay', playOnLoad)
+  }
+  audio.value.addEventListener('canplay', playOnLoad, { once: true })
   isPlaying.value = true
 }
 
 const nextTrack = () => {
   if (hasNext.value) {
     currentIndex.value++
-    audio.value.src = currentTrack.value.url
-    audio.value.play()
+    const newSrc = currentTrack.value.url
+    audio.value.src = newSrc
+    // 关键：设置 autoplay，让浏览器在加载完成后自动尝试播放
+    audio.value.autoplay = true
+    audio.value.load()
+    // 备选：监听 canplay 事件再 play（防止 autoplay 不生效）
+    const playOnLoad = () => {
+      audio.value.play().catch(e => console.warn('自动播放被阻止，请手动点击播放', e))
+      audio.value.removeEventListener('canplay', playOnLoad)
+    }
+    audio.value.addEventListener('canplay', playOnLoad, { once: true })
     isPlaying.value = true
+  } else {
+    isPlaying.value = false
   }
 }
 
 const prevTrack = () => {
   if (hasPrev.value) {
     currentIndex.value--
-    audio.value.src = currentTrack.value.url
-    audio.value.play()
+    const newSrc = currentTrack.value.url
+    audio.value.src = newSrc
+    audio.value.autoplay = true
+    audio.value.load()
+    const playOnLoad = () => {
+      audio.value.play().catch(e => console.warn('自动播放被阻止，请手动点击播放', e))
+      audio.value.removeEventListener('canplay', playOnLoad)
+    }
+    audio.value.addEventListener('canplay', playOnLoad, { once: true })
     isPlaying.value = true
   }
 }
+
 
 const togglePanel = () => {
   panelVisible.value = !panelVisible.value
@@ -92,6 +132,14 @@ const onEnded = () => {
     nextTrack()
   } else {
     isPlaying.value = false
+    // 如果你希望循环播放第一首，取消下面注释
+    // if (playlist.value.length > 0) {
+    //   currentIndex.value = 0
+    //   audio.value.src = currentTrack.value.url
+    //   audio.value.load()
+    //   audio.value.play()
+    //   isPlaying.value = true
+    // }
   }
 }
 
@@ -118,7 +166,7 @@ onUnmounted(() => {
   position: relative;
   display: inline-flex;
   align-items: center;
-  margin-left: 8px;
+  margin-left: 10px;
 }
 .music-panel audio {
   width: 100% !important;

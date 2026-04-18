@@ -1,0 +1,54 @@
+/* 辅助样式：右侧大纲宽度限制、侧边栏隐藏时调整、打印样式 */
+.VPDoc .aside {
+  max-width: 256px !important;
+}
+
+.sidebar-hidden .content-container {
+  max-width: 1200px !important;
+}
+
+.sidebar-hidden .VPDoc .aside {
+  max-width: 200px !important;
+  width: 200px !important;
+}
+
+@media print {
+  .VPNav,
+  .VPSidebar,
+  .VPDocFooter,
+  .aside {
+    display: none !important;
+  }
+  .VPContent {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .vp-doc {
+    max-width: 100% !important;
+  }
+}
+
+/* 侧边栏基础宽度过渡 */
+.VPSidebar {
+  transition: width 0.3s ease, min-width 0.3s ease, max-width 0.3s ease;
+  overflow-x: hidden; /* 防止内容溢出 */
+}
+
+/* 侧边栏隐藏时宽度变为0 */
+.sidebar-hidden .VPSidebar {
+  width: 0 !important;
+  min-width: 0 !important;
+  max-width: 0 !important;
+  padding: 0 !important;
+  border-right: none !important;
+}
+
+/* 内容区左边距过渡 */
+.VPContent {
+  transition: margin-left 0.3s ease;
+  margin-left: var(--vp-sidebar-width);
+}
+
+.sidebar-hidden .VPContent {
+  margin-left: 0 !important;
+}
